@@ -15,8 +15,9 @@ class Hotel
     true
   end
 
-  def check_out_guest(guest_name)
+  def check_out_guest(guest_name,room_number)
     @guests.delete(guest_name)
+    @occupied_rooms.delete(room_number)
   end
 end
 
@@ -49,14 +50,18 @@ describe Hotel do
     end
   end
 
-  it 'can check out a guest' do
-    # instantiate a hotel
-    # check a guest into the hotel
-    hotel.check_in_guest('Michael',99)
-    # check the same guest out of the hotel
-    hotel.check_out_guest('Michael')
-    # expect that the hotel's guests do not include that guest
-    expect(hotel.guests).not_to include 'Michael'
+  describe 'checking out a guest' do
+    it 'can check out a check_out_guest' do
+      hotel.check_in_guest('Michael',99)
+      hotel.check_out_guest('Michael',99)
+      expect(hotel.guests).not_to include 'Michael'
+    end
+
+    it 'frees up the room' do
+      hotel.check_in_guest('Sally',11)
+      hotel.check_out_guest('Sally',11)
+      expect(hotel.check_in_guest('Priscillia',11)).to be true
+    end
   end
 
 end
